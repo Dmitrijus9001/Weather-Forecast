@@ -1,0 +1,77 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UFT-8">
+        <meta name="description" content="Weather forecast.">
+        <meta name="author" content="Dmitrijus Jakovlevas">
+        <meta name="keywords" content="Weather, Forecast, 5 days.">
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</head>
+    </head>
+
+    <body>
+        <h1>The Weather Forecast</h1>
+            <div><p>- Weather forecast updated every 3 hours -</p>
+            </div>
+
+            <div><i class="glyphicon glyphicon-barcodet"></i>
+            </div>
+
+            <div><button type="button" onclick="loadDoc()">Check status</button>
+            </div>
+            <div><table id="demo3"></p></table>
+            </div>
+
+            <script>
+            var myArray = new Array ();
+            var yourArray = new Array ();
+            var ourArray = new Array ();
+            var nrArray =["Today", "Day 1", "Day 2", "Day 3", "Day 4", "Day 5"];
+
+            function loadDoc() {
+              var xhttp = new XMLHttpRequest();
+              xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                  myFunction(this);
+                }
+              };
+              xhttp.open("GET", "http://api.openweathermap.org/data/2.5/forecast?id=593116&APPID=4fd59c4bae807f29ff0552c7c1586a04&mode=xml", true);
+              xhttp.send();
+            }
+            function myFunction(xml) {
+              var i;
+              var x;
+              var y;
+              var xmlDoc = xml.responseXML;
+              var c = xmlDoc.getElementsByTagName("clouds");
+              for (i = 0; i <c.length; i = i + 7) { 
+                myArray.push(c[i].getAttribute("all"));
+              }
+
+              for (x = 0; x <myArray.length; x ++) { 
+                  if (myArray[x] < 33) {yourArray.push("Sunny")} else {
+                      if (myArray[x] > 66) {yourArray.push("Rainy")} else {yourArray.push("Cloudy")}}
+              }
+
+              for (y = 0; y <myArray.length; y ++) { 
+                  if (myArray[y] < 33) {ourArray.push('<i class="fa fa-sun-o" style="font-size:40px;"></i>')} else {
+                      if (myArray[y] > 66) {ourArray.push('<i class="material-icons" style="font-size:40px;">wb_cloudy</i>')} else {ourArray.push('<i class="material-icons" style="font-size:40px;">cloud_queue</i>')}}
+              }
+
+              var table="<tr><th>Day</th><th>Description</th><th>Weaher</th></tr>";
+              for (x = 0; x < myArray.length; x ++) {
+                    table += "<tr><td>" + nrArray[x] + "</td><td>" + yourArray[x] + "</td><td>" + ourArray[x] + "</td></tr>"
+              }
+
+              document.getElementById("demo3").innerHTML = table ;
+            }
+            </script>
+
+            
+    </body>
+
+</html>
