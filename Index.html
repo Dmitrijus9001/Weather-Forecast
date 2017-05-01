@@ -9,7 +9,14 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+            <script>
+            $(document).ready(function(){
+                $("button").one("click", function(){
+                    $(this).remove();
+                });
+            });
+            </script>
 </head>
     </head>
 
@@ -17,20 +24,22 @@
         <h1>The Weather Forecast</h1>
             <div><p>- Weather forecast in Vilnius, Lithuania -</p>
             </div>
-
-            <div><i class="glyphicon glyphicon-barcodet"></i>
-            </div>
-
             <div><button type="button" onclick="loadDoc()">Check status</button>
             </div>
-            <div><table id="demo3"></p></table>
+            <div><table id="demo1"></table>
             </div>
-
+            <div><p id="demo2"></p>
+            </div>
             <script>
             var myArray = new Array ();
             var yourArray = new Array ();
             var ourArray = new Array ();
-            var nrArray =["Today", "Day 1", "Day 2", "Day 3", "Day 4", "Day 5"];
+            var weekDay = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            var nrArray =["Today"];
+            var tempArray = new Array ();
+                var d = new Date();
+                var n = d.getDay();
+                var limit = n + 6;
 
             function loadDoc() {
               var xhttp = new XMLHttpRequest();
@@ -46,11 +55,28 @@
               var i;
               var x;
               var y;
+              var t;
+              var temp;
               var xmlDoc = xml.responseXML;
               var c = xmlDoc.getElementsByTagName("clouds");
               for (i = 0; i <c.length; i = i + 7) { 
                 myArray.push(c[i].getAttribute("all"));
               }
+
+              var t = xmlDoc.getElementsByTagName("temperature");
+              for (i = 0; i <t.length; i = i + 7) { 
+                tempArray.push(t[i].getAttribute("value"));
+              }
+
+              for (i = 0; i <tempArray.length; i ++) { 
+                tempArray[i] = (tempArray[i] - 273);
+              }
+
+
+              for (i = 0; i <tempArray.length; i ++) { 
+                tempArray[i] = Math.round(tempArray[i]);
+              }
+              
 
               for (x = 0; x <myArray.length; x ++) { 
                   if (myArray[x] < 33) {yourArray.push("Sunny")} else {
@@ -62,15 +88,22 @@
                       if (myArray[y] > 66) {ourArray.push('<i class="material-icons" style="font-size:40px;">wb_cloudy</i>')} else {ourArray.push('<i class="material-icons" style="font-size:40px;">cloud_queue</i>')}}
               }
 
-              var table="<tr><th>Day</th><th>Description</th><th>Weaher</th></tr>";
-              for (x = 0; x < myArray.length; x ++) {
-                    table += "<tr><td>" + nrArray[x] + "</td><td>" + yourArray[x] + "</td><td>" + ourArray[x] + "</td></tr>"
+              for (n += n; n < limit; n ++) {
+                nrArray.push(weekDay[n]);
               }
 
-              document.getElementById("demo3").innerHTML = table ;
+              var table="<tr class='first'><th>Day</th><th>Description</th><th>Temperature</th><th>Weather</th></tr>";
+              for (x = 0; x < myArray.length; x ++) {
+
+                    table += "<tr><td>" + nrArray[x] + "</td><td>" + yourArray[x] + "</td><td>" + tempArray[x] + " &#176;C" + "</td><td>" + ourArray[x] + "</td></tr>"
+              }
+
+              document.getElementById("demo1").innerHTML = table ;
+              /* document.getElementById("demo2").innerHTML = tempArray ; */
             }
             </script>
 
+ 
             
     </body>
 
