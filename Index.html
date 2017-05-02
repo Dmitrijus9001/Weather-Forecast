@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
     <head>
         <meta charset="UFT-8">
@@ -35,11 +35,11 @@
             var yourArray = new Array ();
             var ourArray = new Array ();
             var weekDay = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-            var nrArray =["Today"];
+            var nrArray =["Today"];              /* -------- Array with displayed weekday names -------- */
             var tempArray = new Array ();
                 var d = new Date();
                 var n = d.getDay();
-                var limit = n + 6;
+                var count = 5;                   /* ---- how many days in advance must be displayed ---- */
 
             function loadDoc() {
               var xhttp = new XMLHttpRequest();
@@ -88,8 +88,8 @@
                       if (myArray[y] > 66) {ourArray.push('<i class="material-icons" style="font-size:40px;">wb_cloudy</i>')} else {ourArray.push('<i class="material-icons" style="font-size:40px;">cloud_queue</i>')}}
               }
 
-              for (n += n; n < limit; n ++) {
-                nrArray.push(weekDay[n]);
+              for (y = 0; y < count; y ++) {
+                nrArray.push(weekDay[n + y]);
               }
 
               var table="<tr class='first'><th>Day</th><th>Description</th><th>Temperature</th><th>Weather</th></tr>";
